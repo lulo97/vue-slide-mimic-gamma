@@ -1,0 +1,114 @@
+<template>
+  <div
+    class="relative rounded-md border border-[#DFB679] overflow-hidden"
+    :style="`width: ${SIZE.WIDTH}px; height: ${SIZE.HEIGHT}px`"
+  >
+  <div
+    class="absolute w-full h-full
+           bg-gradient-to-br from-red-200 via-yellow-200 to-green-200
+           opacity-30 blur-3xl"
+  ></div>
+
+    <div
+      ref="layoutBtn"
+      name="layout_setting"
+      @click="openPopup"
+      class="absolute top-3 left-3 bg-white z-10 w-[40px] h-[25px] rounded-md border border-gray-400 flex justify-center items-center gap-1 cursor-pointer"
+    >
+      <img style="width: 15px; height: 12px" src="/svg/card_layout.svg" />
+      <img style="width: 11.25px; height: 9px" src="/svg/arrow_down.svg" />
+    </div>
+
+    <div :class="containerClass" class="w-full h-full relative">
+      <img
+        v-if="props.layout !== 'background'"
+        :class="imageClass"
+        :src="props.image_url"
+      />
+
+      <!-- Background mode -->
+      <img v-else :class="imageClass" :src="props.image_url" />
+
+      <div v-if="props.layout !== 'background'" class="ml-[24px] flex-1">
+        <slot></slot>
+      </div>
+
+      <!-- Background content overlay -->
+      <div v-else class="ml-[12px] relative z-10 w-full h-full">
+        <slot></slot>
+      </div>
+    </div>
+  </div>
+
+  <Popup v-model="show" :x="popupX" :y="popupY">
+    <LayoutSetting :name="props.name"></LayoutSetting>
+  </Popup>
+</template>
+
+<script setup>
+import { computed, ref, nextTick } from "vue";
+import Popup from "../popup/Popup.vue";
+import LayoutSetting from "./LayoutSetting.vue";
+
+const show = ref(false);
+const layoutBtn = ref(null);
+
+const popupX = ref(0);
+const popupY = ref(0);
+
+const openPopup = async () => {
+  await nextTick();
+
+  const rect = layoutBtn.value.getBoundingClientRect();
+
+  popupX.value = rect.left;
+  popupY.value = rect.bottom + 8; // 8px gap below button
+
+  show.value = true;
+};
+const SIZE = {
+  WIDTH: 998.667,
+  HEIGHT: 561.729,
+};
+
+const props = defineProps({
+  name: String,
+  layout: String, //top, right, bottom, no-layout, background
+  image_url: String,
+});
+
+const containerClass = computed(() => {
+  switch (props.layout) {
+    case "left":
+      return "flex flex-row";
+    case "right":
+      return "flex flex-row-reverse";
+    case "top":
+      return "flex flex-col";
+    case "bottom":
+      return "flex flex-col-reverse";
+    default:
+      return "";
+  }
+});
+
+const imageClass = computed(() => {
+  switch (props.layout) {
+    case "left":
+    case "right":
+      return "h-full w-auto object-contain shrink-0";
+
+    case "top":
+      return "w-full h-[30%] object-cover shrink-0";
+    case "bottom":
+      return "w-full h-auto object-contain shrink-0";
+
+    case "background":
+      return "absolute inset-0 w-full h-full object-cover";
+    case "none":
+      return "hidden";
+    default: // no-layout
+      return "w-full h-full object-contain";
+  }
+});
+</script>
