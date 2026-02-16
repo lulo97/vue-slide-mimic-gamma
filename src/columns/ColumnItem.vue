@@ -58,7 +58,7 @@
       :isHideMenu="true"
       :modelValue="title"
       @update:modelValue="(val) => emit('update:title', val)"
-      :defaultTextStyle="TITLE_STYLE"
+      :defaultTextStyle="TITLE_COLUMN_STYLE"
       :isTitle="true"
       :class="'title-editor'"
     />
@@ -77,7 +77,11 @@
 import { ref, nextTick, onMounted, onBeforeUnmount } from "vue";
 import TextEditor from "../text_editor/TextEditor.vue";
 import Popover from "../popover/PopOver.vue";
-import { CONTENT_STYLE, TITLE_STYLE } from "../text_editor/utils";
+import {
+  CONTENT_STYLE,
+  TITLE_COLUMN_STYLE,
+  TITLE_STYLE,
+} from "../text_editor/utils";
 
 const props = defineProps({
   title: Object,

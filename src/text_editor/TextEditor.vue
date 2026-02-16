@@ -29,7 +29,7 @@
     >
       <div
         v-if="showToolButton && !props.isHideMenu"
-        :class="`drag-handle absolute top-0 left-[10px] bg-white hover:bg-gray-500 px-[3px] h-fit flex justify-center items-center cursor-pointer border-gray-700 border rounded-sm`"
+        :class="`drag-handle absolute top-1/2 -translate-y-1/2 left-[${TEXT_EDITOR_BUBBLE_LEFT}px] bg-white hover:bg-gray-500 px-[3px] h-fit flex justify-center items-center cursor-pointer border-gray-700 border rounded-sm`"
         @click="handleShowToolButtonClick"
       >
         ⋮
@@ -59,7 +59,7 @@ import {
   openBubble,
   closeBubble,
 } from "../stores/bubbleMenuStore";
-import { PADDING_X } from "../card/setting";
+import { PADDING_X, TEXT_EDITOR_BUBBLE_LEFT } from "../card/setting";
 
 const CustomTextStyle = TextStyle.extend({
   addAttributes() {
@@ -183,16 +183,16 @@ function handleEditorHover(type) {
 }
 
 const toggleFontWeight = () => {
-  const isActive = editor.isActive("textStyle", { fontWeight: "600" });
+  const isActive = editor.value.isActive("textStyle", { fontWeight: "600" });
 
   if (isActive) {
-    editor
+    editor.value
       .chain()
       .focus()
-      .setMark("textStyle", { fontWeight: CONTENT_STYLE.fontWeight }) // remove weight
+      .setMark("textStyle", { fontWeight: CONTENT_STYLE.fontWeight })
       .run();
   } else {
-    editor
+    editor.value
       .chain()
       .focus()
       .setMark("textStyle", { fontWeight: TITLE_STYLE.fontWeight })

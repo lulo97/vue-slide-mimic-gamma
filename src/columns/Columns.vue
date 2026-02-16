@@ -1,5 +1,17 @@
 <template>
-  <div :class="`${PADDING_X} w-full`">
+  <div
+    id="columns"
+    :class="`${PADDING_X} w-full relative`"
+    @mouseenter="handleColumnsHover('enter')"
+    @mouseleave="handleColumnsHover('leave')"
+  >
+    <div
+      v-if="showToolButton"
+      :class="`drag-handle absolute top-0 left-[${TEXT_EDITOR_BUBBLE_LEFT}px] bg-white hover:bg-gray-500 px-[3px] h-fit flex justify-center items-center cursor-pointer border-gray-700 border rounded-sm`"
+    >
+      ⋮
+    </div>
+
     <draggable
       v-model="columns"
       item-key="id"
@@ -22,11 +34,23 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import draggable from "vuedraggable";
 import ColumnItem from "./ColumnItem.vue";
-import { EMPTY_ROW } from "./data";
-import { PADDING_X } from "../card/setting";
+import { EMPTY_ROW } from "./utils";
+import { PADDING_X, TEXT_EDITOR_BUBBLE_LEFT } from "../card/setting";
+
+const showToolButton = ref(false);
+
+function handleColumnsHover(type) {
+  if (type === "enter") {
+    showToolButton.value = true;
+  }
+
+  if (type === "leave") {
+    showToolButton.value = false;
+  }
+}
 
 const props = defineProps({
   modelValue: {
@@ -37,13 +61,11 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue"]);
 
-/* ✅ Proper v-model bridge */
 const columns = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
 
-/* Optional: update nested values safely */
 function updateTitle(index, val) {
   const updated = [...props.modelValue];
   updated[index].title = val;

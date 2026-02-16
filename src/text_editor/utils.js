@@ -14,3 +14,22 @@ export const CONTENT_STYLE = {
   fontSize: "18px",
   fontWeight: "400",
 };
+
+export const CSS = {
+  TITLE_STYLE: {
+    "--title-font-family": "Bricolage Grotesque",
+    "--title-font-size": "45px",
+    "--title-font-weight": "600",
+  },
+
+  TITLE_COLUMN_STYLE: {
+    "--title-font-family": "Bricolage Grotesque",
+    "--title-font-size": "22.5px",
+    "--title-font-weight": "600",
+  },
+  CONTENT_STYLE: {
+    "--content-font-family": "Inter",
+    "--content-font-size": "18px",
+    "--content-font-weight": "400",
+  },
+};

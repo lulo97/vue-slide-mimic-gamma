@@ -10,3 +10,5 @@ export const CARD_SETTING = {
 };
 
 export const PADDING_X = `pl-[${CARD_SETTING.PADDING.LEFT}px] pr-[${CARD_SETTING.PADDING.RIGHT}px]`;
+
+export const TEXT_EDITOR_BUBBLE_LEFT = CARD_SETTING.PADDING.LEFT / 1.5;

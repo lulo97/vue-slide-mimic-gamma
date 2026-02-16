@@ -43,22 +43,4 @@ function createDoc(text, marks = []) {
   };
 }
 
-export const COLUMNS = [
-  {
-    id: crypto.randomUUID(),
-    title: _formatHead("Where"),
-    content: _format("Lowland to highland forests across Vietnam"),
-  },
-  {
-    id: crypto.randomUUID(),
-    title: _formatHead("Why"),
-    content: _format("Plants evolved toxins for defense"),
-  },
-  {
-    id: crypto.randomUUID(),
-    title: _formatHead("Who' at risk"),
-    content: _format("Trekkers, foragers, children, workers"),
-  },
-];
-
 export const EMPTY_ROW = { title: _formatHead(""), content: _format("") };
