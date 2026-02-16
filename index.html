@@ -23,4 +23,29 @@
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
+
+  <style>
+    .ProseMirror p.is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      color: #9ca3af;
+      pointer-events: none;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      width: 100%;
+    }
+
+    .title-editor .ProseMirror p.is-editor-empty:first-child::before {
+      font-family: "Bricolage Grotesque";
+      font-size: 22.5px;
+      font-weight: 700;
+    }
+
+    .content-editor .ProseMirror p.is-editor-empty:first-child::before {
+      font-family: "Inter";
+      font-size: 18px;
+      font-weight: 400;
+    }
+  </style>
 </html>

@@ -52,12 +52,45 @@ import { Color } from "@tiptap/extension-color";
 import { ref, onBeforeUnmount, onMounted } from "vue";
 import { FontSize } from "@tiptap/extension-text-style/font-size";
 import { FontFamily } from "@tiptap/extension-text-style/font-family";
+import { Placeholder } from "@tiptap/extension-placeholder";
+
+const CustomTextStyle = TextStyle.extend({
+  addAttributes() {
+    return {
+      fontFamily: {
+        default: null,
+        parseHTML: (element) => element.style.fontFamily,
+        renderHTML: (attributes) => {
+          if (!attributes.fontFamily) return {};
+          return { style: `font-family: ${attributes.fontFamily}` };
+        },
+      },
+      fontSize: {
+        default: null,
+        parseHTML: (element) => element.style.fontSize,
+        renderHTML: (attributes) => {
+          if (!attributes.fontSize) return {};
+          return { style: `font-size: ${attributes.fontSize}` };
+        },
+      },
+      fontWeight: {
+        default: null,
+        parseHTML: (element) => element.style.fontWeight,
+        renderHTML: (attributes) => {
+          if (!attributes.fontWeight) return {};
+          return { style: `font-weight: ${attributes.fontWeight}` };
+        },
+      },
+    };
+  },
+});
 
 import {
   activeEditorId,
   openBubble,
   closeBubble,
 } from "../stores/bubbleMenuStore";
+import { TITLE_STYLE } from "../columns/data";
 
 /* ---------------------------
    Unique ID per instance
@@ -72,6 +105,12 @@ const editorId = Symbol("editor");
 const props = defineProps({
   modelValue: Object,
   isHideMenu: Boolean | undefined,
+  placeholder: {
+    type: String,
+    default: "Write something...",
+  },
+  defaultTextStyle: Object | undefined,
+  isTitle: Boolean | undefined,
 });
 
 /* ---------------------------
@@ -83,12 +122,15 @@ const emit = defineEmits(["update:modelValue"]);
 const editor = useEditor({
   extensions: [
     StarterKit,
-    TextStyle,
+    CustomTextStyle,
     FontSize.configure({
       types: ["textStyle"],
     }),
     FontFamily.configure({
       types: ["textStyle"],
+    }),
+    Placeholder.configure({
+      placeholder: props.placeholder,
     }),
   ],
   content: props.modelValue, // JSON now
@@ -108,6 +150,14 @@ const editor = useEditor({
         return true;
       },
     },
+  },
+  onCreate({ editor }) {
+    if (editor.isEmpty && props.defaultTextStyle) {
+      editor.commands.setMark("textStyle", props.defaultTextStyle);
+      if (props.isTitle) {
+        editor.commands.toggleBold();
+      }
+    }
   },
 });
 
