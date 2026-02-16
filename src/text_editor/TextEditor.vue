@@ -186,7 +186,6 @@ function handleEditorHover(type) {
 }
 
 onMounted(() => {
-  // editor.value.chain().focus().setFontSize("29.7px").run();
   editor.value.chain().focus().setFontFamily("Bricolage Grotesque").run();
 });
 

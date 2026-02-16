@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10 w-full">
+  <div class="px-[30px] w-full">
     <draggable
       v-model="columns"
       item-key="id"

@@ -9,5 +9,7 @@ import { ref } from "vue";
 import Columns from "../columns/Columns.vue";
 import { COLUMNS } from "../columns/data";
 
+console.log(COLUMNS);
+
 const columns = ref([...COLUMNS]);
 </script>

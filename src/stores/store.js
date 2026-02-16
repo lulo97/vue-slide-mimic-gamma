@@ -9,7 +9,7 @@ const state = ref([
       {
         id: 1,
         level: 1,
-        content: {
+        data: {
           type: "doc",
           content: [
             {
@@ -23,7 +23,7 @@ const state = ref([
                       type: "textStyle",
                       attrs: {
                         fontFamily: "Bricolage Grotesque",
-                        fontSize: "29.7px",
+                        fontSize: "45px",
                         fontWeight: "600",
                       },
                     },
@@ -38,7 +38,7 @@ const state = ref([
       {
         id: 2,
         level: 2,
-        content: {
+        data: {
           type: "doc",
           content: [
             {
@@ -52,13 +52,184 @@ const state = ref([
                       type: "textStyle",
                       attrs: {
                         fontFamily: "Inter",
-                        fontSize: "13.5px",
+                        fontSize: "18px",
                         fontWeight: "400",
                       },
                     },
                   ],
                 },
               ],
+            },
+          ],
+        },
+      },
+      {
+        id: 3,
+        level: 3,
+        data: {
+          type: "columns",
+          content: [
+            {
+              id: "0cc4622b-4405-46cb-ae42-80798b25f001",
+              title: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Where",
+                        marks: [
+                          {
+                            type: "bold",
+                          },
+                          {
+                            type: "textStyle",
+                            attrs: {
+                              fontFamily: "Bricolage Grotesque",
+                              fontSize: "22.5px",
+                              fontWeight: "600",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              content: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Lowland to highland forests across Vietnam",
+                        marks: [
+                          {
+                            type: "textStyle",
+                            attrs: {
+                              fontFamily: "Inter",
+                              fontSize: "18px",
+                              fontWeight: "400",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              id: "84d73c2b-1036-41b5-8dcb-4a6be7b2199f",
+              title: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Why",
+                        marks: [
+                          {
+                            type: "bold",
+                          },
+                          {
+                            type: "textStyle",
+                            attrs: {
+                              fontFamily: "Bricolage Grotesque",
+                              fontSize: "22.5px",
+                              fontWeight: "600",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              content: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Plants evolved toxins for defense",
+                        marks: [
+                          {
+                            type: "textStyle",
+                            attrs: {
+                              fontFamily: "Inter",
+                              fontSize: "18px",
+                              fontWeight: "400",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              id: "63c44dbb-f1f2-4a12-9bed-69347cf6e473",
+              title: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Who' at risk",
+                        marks: [
+                          {
+                            type: "bold",
+                          },
+                          {
+                            type: "textStyle",
+                            attrs: {
+                              fontFamily: "Bricolage Grotesque",
+                              fontSize: "22.5px",
+                              fontWeight: "600",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+              content: {
+                type: "doc",
+                content: [
+                  {
+                    type: "paragraph",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Trekkers, foragers, children, workers",
+                        marks: [
+                          {
+                            type: "textStyle",
+                            attrs: {
+                              fontFamily: "Inter",
+                              fontSize: "18px",
+                              fontWeight: "400",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
             },
           ],
         },

@@ -4,6 +4,7 @@ import Card from "../card/Card.vue";
 import { state } from "../stores/store";
 import TextEditor from "../text_editor/TextEditor.vue";
 import draggable from "vuedraggable";
+import Columns from "../columns/Columns.vue";
 </script>
 
 <template>
@@ -20,9 +21,24 @@ import draggable from "vuedraggable";
         item-key="id"
         handle=".drag-handle"
         animation="200"
+        class="flex flex-col justify-between h-full py-8"
       >
         <template #item="{ element }">
-          <TextEditor v-model="element.content" />
+          <div>
+            <Columns
+              v-if="element.data.type == 'columns'"
+              v-model="element.data.content"
+            />
+            <TextEditor
+              v-if="element.data.type == 'doc'"
+              v-model="element.data"
+              :style="{
+                marginBottom: element.marginBottom
+                  ? element.marginBottom + 'px'
+                  : undefined,
+              }"
+            />
+          </div>
         </template>
       </draggable>
     </Card>

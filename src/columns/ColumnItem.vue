@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative bg-white border border-[#DFB679] pt-[12px] pb-[12px] px-[12px] rounded-md flex-1"
+    class="relative bg-white border border-[#DFB679] p-[18px] rounded-md flex-1 flex flex-col"
     @mouseenter="handleColumnHover('enter')"
     @mouseleave="handleColumnHover('leave')"
   >
@@ -25,7 +25,7 @@
             @click="handleModifyColumns(index, 'add_before')"
           >
             <img
-              style="width: 14px; height: 17.5px"
+              style="width: 12.25px; height: 14px"
               src="/svg/add_column_before.svg"
             />
           </div>
@@ -34,8 +34,19 @@
             @click="handleModifyColumns(index, 'add_after')"
           >
             <img
-              style="width: 14px; height: 17.5px"
+              style="width: 12.25px; height: 14px"
               src="/svg/add_column_after.svg"
+            />
+          </div>
+
+          <div
+            class="cursor-pointer hover:bg-cyan-200 p-1 rounded-md"
+            @click="handleModifyColumns(index, 'delete')"
+          >
+            <img
+              class="fill-[#a52f2f]"
+              style="width: 12.25px; height: 14px"
+              src="/svg/trash.svg"
             />
           </div>
         </div>
@@ -137,5 +148,7 @@ onBeforeUnmount(() => {
 
 function handleModifyColumns(index, action) {
   emit("handleModifyColumns", index, action);
+  showPopover.value = false;
+  showColumnButton.value = false;
 }
 </script>

@@ -53,13 +53,18 @@ function createDoc(text, marks = []) {
 export const COLUMNS = [
   {
     id: crypto.randomUUID(),
-    title: _formatHead("Column 1"),
-    content: _format("Fake content A"),
+    title: _formatHead("Where"),
+    content: _format("Lowland to highland forests across Vietnam"),
   },
   {
     id: crypto.randomUUID(),
-    title: _formatHead("Column 2"),
-    content: _format("Fake content B"),
+    title: _formatHead("Why"),
+    content: _format("Plants evolved toxins for defense"),
+  },
+  {
+    id: crypto.randomUUID(),
+    title: _formatHead("Who' at risk"),
+    content: _format("Trekkers, foragers, children, workers"),
   },
 ];
 

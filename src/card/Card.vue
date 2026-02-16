@@ -11,7 +11,7 @@
       ref="layoutBtn"
       name="layout_setting"
       @click="openPopup"
-      class="absolute top-3 left-3 bg-white z-10 w-[40px] h-[25px] rounded-md border border-gray-400 flex justify-center items-center gap-1 cursor-pointer"
+      class="absolute top-3 left-3 bg-white z-[9999] w-[40px] h-[25px] rounded-md border border-gray-400 flex justify-center items-center gap-1 cursor-pointer"
     >
       <img style="width: 15px; height: 12px" src="/svg/card_layout.svg" />
       <img style="width: 11.25px; height: 9px" src="/svg/arrow_down.svg" />
@@ -27,7 +27,10 @@
       <!-- Background mode -->
       <img v-else :class="imageClass" :src="props.image_url" />
 
-      <div v-if="props.layout !== 'background'" class="ml-[0px] flex-1">
+      <div
+        v-if="props.layout !== 'background'"
+        class="ml-[0px] mt-[10px] flex-1 h-full"
+      >
         <slot></slot>
       </div>
 
@@ -66,7 +69,7 @@ const openPopup = async () => {
 };
 const SIZE = {
   WIDTH: 998.667,
-  HEIGHT: 561.729,
+  HEIGHT: 591.729,
 };
 
 const props = defineProps({
@@ -97,7 +100,7 @@ const imageClass = computed(() => {
       return "h-full w-auto object-contain shrink-0";
 
     case "top":
-      return "w-full h-[30%] object-cover shrink-0";
+      return "w-full h-[40%] object-cover shrink-0";
     case "bottom":
       return "w-full h-auto object-contain shrink-0";
 
