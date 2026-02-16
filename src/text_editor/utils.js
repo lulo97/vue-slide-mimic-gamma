@@ -15,6 +15,12 @@ export const CONTENT_STYLE = {
   fontWeight: "400",
 };
 
+export const STYLE_MAP = {
+  TITLE_STYLE: TITLE_STYLE,
+  TITLE_COLUMN_STYLE: TITLE_COLUMN_STYLE,
+  CONTENT_STYLE: CONTENT_STYLE,
+};
+
 export const CSS = {
   TITLE_STYLE: {
     "--title-font-family": "Bricolage Grotesque",
