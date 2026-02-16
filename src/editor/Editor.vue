@@ -1,16 +1,47 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, nextTick } from "vue";
 import Card from "../card/Card.vue";
 import { state, updateState } from "../store";
 import TextEditor from "../text_editor/TextEditor.vue";
 import HoverTools from "../hover_tools/HoverTools.vue";
-import GridWrapper from "../grid_wrapper/GridWrapper.vue";
-import draggable from "vuedraggable";
 
-const editorRefs = ref({});
+const activeSlide = ref<string | null>(null);
+const activeContentIndex = ref<number | null>(null);
 
-function handleHoverClick(cardName: string) {
-  editorRefs.value[cardName]?.selectAll();
+async function setActive(slideName: string, index: number) {
+  activeSlide.value = slideName;
+  activeContentIndex.value = index;
+
+  await nextTick(); // wait until editor renders
+
+  editorRef.value?.selectAll();
+}
+
+const editorRef = ref<any>(null);
+
+const activeText = computed({
+  get() {
+    if (!activeSlide.value) return "";
+
+    const slide = state.value.find((s) => s.name === activeSlide.value);
+
+    if (!slide || activeContentIndex.value === null) return "";
+
+    return slide.contents[activeContentIndex.value].text;
+  },
+  set(value: string) {
+    if (!activeSlide.value) return;
+
+    const slide = state.value.find((s) => s.name === activeSlide.value);
+
+    if (!slide || activeContentIndex.value === null) return;
+
+    slide.contents[activeContentIndex.value].text = value;
+  },
+});
+
+function isActive(slideName: string, index: number) {
+  return activeSlide.value === slideName && activeContentIndex.value === index;
 }
 
 onMounted(() => {
@@ -27,14 +58,21 @@ onMounted(() => {
       :image_url="card.image_url"
     >
       <HoverTools
-        v-for="content in card.contents"
-        @click="handleHoverClick(card.name)"
+        v-for="(content, index) in card.contents"
+        :key="index"
+        @click="setActive(card.name, index)"
       >
-        <TextEditor
-          :ref="(el) => (editorRefs[card.name] = el)"
-          v-model="content.text"
-        ></TextEditor>
+        <template v-if="isActive(card.name, index)">
+          <TextEditor v-model="activeText" :ref="(el) => (editorRef = el)" />
+        </template>
+
+        <template v-else>
+          <div v-html="content.text"></div>
+        </template>
       </HoverTools>
     </Card>
   </div>
+
+  activeSlide={{ activeSlide }} <br />
+  activeText={{ activeText }}
 </template>

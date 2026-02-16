@@ -1,191 +1,151 @@
 <template>
-  <div class="relative">
-    <!-- Floating Notion-style menu -->
+  <div class="">
+    <!-- z-index to prevent bubblemenu under another editor -->
     <BubbleMenu
       v-if="editor"
       :editor="editor"
-      class="flex items-center gap-2 bg-white shadow-xl rounded-xl p-2 border border-gray-200"
+      class="z-[9999] bg-white border border-gray-200 rounded-lg px-2 py-2 shadow-md flex gap-2"
     >
-      <!-- Text Style Select -->
-      <select
-        :value="currentTextType"
-        class="text-sm border rounded-md px-2 py-1 bg-gray-50 z-100"
-        @change="applyTextStyle($event.target.value)"
-      >
-        <option value="paragraph">Paragraph</option>
-        <option value="h1">Heading 1</option>
-        <option value="h2">Heading 2</option>
-        <option value="h3">Heading 3</option>
-        <option value="h4">Heading 4</option>
-        <option value="small">Small Text</option>
-        <option value="medium">Medium Text</option>
-        <option value="large">Large Text</option>
-      </select>
-
-      <!-- Bold -->
       <button
         @click="editor.chain().focus().toggleBold().run()"
-        :class="buttonClass(editor.isActive('bold'))"
+        :class="{ active: editor.isActive('bold') }"
       >
-        Bold
+        <img style="width: 17.5px; height: 14px" src="/svg/bold.svg" />
       </button>
 
-      <!-- Italic -->
       <button
         @click="editor.chain().focus().toggleItalic().run()"
-        :class="buttonClass(editor.isActive('italic'))"
+        :class="{ active: editor.isActive('italic') }"
       >
-        Italic
-      </button>
-
-      <!-- Colors -->
-      <button
-        @click="setColor('red')"
-        class="px-2 py-1 text-sm rounded-md bg-red-100 hover:bg-red-200"
-      >
-        Red
-      </button>
-
-      <button
-        @click="setColor('blue')"
-        class="px-2 py-1 text-sm rounded-md bg-blue-100 hover:bg-blue-200"
-      >
-        Blue
+        <img style="width: 17.5px; height: 14px" src="/svg/italic.svg" />
       </button>
     </BubbleMenu>
 
-    <!-- Editor -->
-    <EditorContent
-      :editor="editor"
-      class="focus:outline-none [&_.ProseMirror]:outline-none [&_p]:m-0"
-    />
+    <!-- w-full not fix bubble menu recaculate position -->
+    <div
+      :class="`relative ${props.isHideMenu ? '' : 'pl-[30px]'} w-full h-fit`"
+      @mouseenter="handleEditorHover('enter')"
+      @mouseleave="handleEditorHover('leave')"
+    >
+      <div
+        v-if="showToolButton && !props.isHideMenu"
+        :class="`drag-handle absolute top-0 left-[10px] bg-white hover:bg-gray-500 px-[3px] h-fit flex justify-center items-center cursor-pointer border-gray-700 border rounded-sm`"
+        @click="handleShowToolButtonClick"
+      >
+        ⋮
+      </div>
+
+      <EditorContent
+        :editor="editor"
+        class="inline-block [&_.ProseMirror]:inline-block"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { watch } from "vue";
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import { BubbleMenu } from "@tiptap/vue-3/menus";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
+import { ref, onBeforeUnmount, onMounted } from "vue";
+import { FontSize } from "@tiptap/extension-text-style/font-size";
+import { FontFamily } from "@tiptap/extension-text-style/font-family";
+
 import {
-  getTextStyleAttributes,
-  getButtonClass,
-  shouldUpdateContent,
-} from "./utils";
-import { defineExpose } from "vue";
-import { computed } from "vue";
+  activeEditorId,
+  openBubble,
+  closeBubble,
+} from "../stores/bubbleMenuStore";
 
-const currentTextType = computed(() => {
-  if (!editor.value) return "paragraph";
+/* ---------------------------
+   Unique ID per instance
+---------------------------- */
 
-  const attrs = editor.value.getAttributes("textStyle");
+const editorId = Symbol("editor");
 
-  if (attrs.fontSize === "32px" && attrs.fontWeight === "700") {
-    return "h1";
-  }
+/* ---------------------------
+   Props
+---------------------------- */
 
-  if (attrs.fontSize === "26px") return "h2";
-  if (attrs.fontSize === "20px" && attrs.fontWeight === "600") return "h3";
-  if (attrs.fontSize === "18px") return "h4";
-  if (attrs.fontSize === "12px") return "small";
-  if (attrs.fontSize === "16px") return "medium";
-  if (attrs.fontSize === "20px" && attrs.fontWeight === "500") return "large";
-
-  return "paragraph";
+const props = defineProps({
+  modelValue: Object,
+  isHideMenu: Boolean | undefined,
 });
 
-/* 👇 expose method to parent */
-function selectAll() {
+/* ---------------------------
+   Editor
+---------------------------- */
+
+const emit = defineEmits(["update:modelValue"]);
+
+const editor = useEditor({
+  extensions: [
+    StarterKit,
+    TextStyle,
+    FontSize.configure({
+      types: ["textStyle"],
+    }),
+    FontFamily.configure({
+      types: ["textStyle"],
+    }),
+  ],
+  content: props.modelValue, // JSON now
+  onUpdate: ({ editor }) => {
+    emit("update:modelValue", editor.getJSON());
+  },
+  // Prevent drag and drop tiptap
+  editorProps: {
+    handleDOMEvents: {
+      dragstart: () => true,
+      dragover: (view, event) => {
+        event.preventDefault();
+        return true;
+      },
+      drop: (view, event) => {
+        event.preventDefault();
+        return true;
+      },
+    },
+  },
+});
+
+function handleShowToolButtonClick() {
   if (!editor.value) return;
+
+  openBubble(editorId);
 
   editor.value.chain().focus().selectAll().run();
 }
 
-defineExpose({
-  selectAll,
-});
+/* ---------------------------
+   Hover logic
+---------------------------- */
 
-const CustomTextStyle = TextStyle.extend({
-  addAttributes() {
-    return {
-      fontSize: {
-        default: null,
-        parseHTML: (element) => element.style.fontSize,
-        renderHTML: (attributes) => {
-          if (!attributes.fontSize) return {};
-          return { style: `font-size: ${attributes.fontSize}` };
-        },
-      },
-      fontWeight: {
-        default: null,
-        parseHTML: (element) => element.style.fontWeight,
-        renderHTML: (attributes) => {
-          if (!attributes.fontWeight) return {};
-          return { style: `font-weight: ${attributes.fontWeight}` };
-        },
-      },
-    };
-  },
-});
+const showToolButton = ref(false);
 
-/* ✅ Props */
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: "",
-  },
-});
+function handleEditorHover(type) {
+  if (type === "enter") {
+    showToolButton.value = true;
+  }
 
-/* ✅ Emit */
-const emit = defineEmits(["update:modelValue"]);
-
-/* ✅ Editor */
-const editor = useEditor({
-  extensions: [
-    StarterKit.configure({
-      heading: false, // disable real headings
-    }),
-    CustomTextStyle,
-    Color.configure({ types: ["textStyle"] }),
-  ],
-  content: props.modelValue,
-  onUpdate: ({ editor }) => {
-    emit("update:modelValue", editor.getHTML());
-  },
-});
-
-/* ✅ Sync when parent updates value */
-watch(
-  () => props.modelValue,
-  (value) => {
-    if (!editor.value) return;
-
-    const current = editor.value.getHTML();
-
-    if (shouldUpdateContent(current, value)) {
-      editor.value.commands.setContent(value, false);
-    }
-  },
-);
-
-const setColor = (color) => {
-  editor.value.chain().focus().setColor(color).run();
-};
-
-const buttonClass = (active) => getButtonClass(active);
-
-function applyTextStyle(type) {
-  if (!editor.value) return;
-
-  const attrs = getTextStyleAttributes(type);
-  const chain = editor.value.chain().focus();
-
-  if (!attrs) {
-    chain.unsetMark("textStyle").run();
-  } else {
-    chain.setMark("textStyle", attrs).run();
+  if (type === "leave") {
+    showToolButton.value = false;
   }
 }
+
+onMounted(() => {
+  // editor.value.chain().focus().setFontSize("29.7px").run();
+  editor.value.chain().focus().setFontFamily("Bricolage Grotesque").run();
+});
+
+onBeforeUnmount(() => {
+  if (editor.value) {
+    editor.value.destroy();
+  }
+
+  // Clean up if this editor was active
+  closeBubble(editorId);
+});
 </script>
