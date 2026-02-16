@@ -7,8 +7,8 @@
       class="z-[9999] bg-white border border-gray-200 rounded-lg px-2 py-2 shadow-md flex gap-2"
     >
       <button
-        @click="editor.chain().focus().toggleBold().run()"
-        :class="{ active: editor.isActive('bold') }"
+        @click="toggleFontWeight"
+        :class="{ active: editor.isActive('textStyle', { fontWeight: '600' }) }"
       >
         <img style="width: 17.5px; height: 14px" src="/svg/bold.svg" />
       </button>
@@ -23,7 +23,7 @@
 
     <!-- w-full not fix bubble menu recaculate position -->
     <div
-      :class="`relative ${props.isHideMenu ? '' : 'pl-[30px]'} w-full h-fit`"
+      :class="`relative ${props.isHideMenu ? '' : PADDING_X} w-full h-fit`"
       @mouseenter="handleEditorHover('enter')"
       @mouseleave="handleEditorHover('leave')"
     >
@@ -53,6 +53,13 @@ import { ref, onBeforeUnmount, onMounted } from "vue";
 import { FontSize } from "@tiptap/extension-text-style/font-size";
 import { FontFamily } from "@tiptap/extension-text-style/font-family";
 import { Placeholder } from "@tiptap/extension-placeholder";
+import { TITLE_STYLE, CONTENT_STYLE } from "./utils";
+import {
+  activeEditorId,
+  openBubble,
+  closeBubble,
+} from "../stores/bubbleMenuStore";
+import { PADDING_X } from "../card/setting";
 
 const CustomTextStyle = TextStyle.extend({
   addAttributes() {
@@ -84,13 +91,6 @@ const CustomTextStyle = TextStyle.extend({
     };
   },
 });
-
-import {
-  activeEditorId,
-  openBubble,
-  closeBubble,
-} from "../stores/bubbleMenuStore";
-import { TITLE_STYLE } from "../columns/data";
 
 /* ---------------------------
    Unique ID per instance
@@ -154,9 +154,6 @@ const editor = useEditor({
   onCreate({ editor }) {
     if (editor.isEmpty && props.defaultTextStyle) {
       editor.commands.setMark("textStyle", props.defaultTextStyle);
-      if (props.isTitle) {
-        editor.commands.toggleBold();
-      }
     }
   },
 });
@@ -185,8 +182,26 @@ function handleEditorHover(type) {
   }
 }
 
+const toggleFontWeight = () => {
+  const isActive = editor.isActive("textStyle", { fontWeight: "600" });
+
+  if (isActive) {
+    editor
+      .chain()
+      .focus()
+      .setMark("textStyle", { fontWeight: CONTENT_STYLE.fontWeight }) // remove weight
+      .run();
+  } else {
+    editor
+      .chain()
+      .focus()
+      .setMark("textStyle", { fontWeight: TITLE_STYLE.fontWeight })
+      .run();
+  }
+};
+
 onMounted(() => {
-  editor.value.chain().focus().setFontFamily("Bricolage Grotesque").run();
+  editor.value.chain().focus().setFontFamily(TITLE_STYLE.fontFamily).run();
 });
 
 onBeforeUnmount(() => {

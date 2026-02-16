@@ -1,7 +1,7 @@
 <template>
   <div
     class="relative rounded-md border border-[#DFB679] overflow-hidden"
-    :style="`width: ${SIZE.WIDTH}px; height: ${SIZE.HEIGHT}px`"
+    :style="`width: ${CARD_SETTING.WIDTH}px; height: ${CARD_SETTING.HEIGHT}px`"
   >
     <div
       class="absolute w-full h-full bg-gradient-to-br from-red-200 via-yellow-200 to-green-200 opacity-30 blur-3xl"
@@ -50,6 +50,7 @@
 import { computed, ref, nextTick } from "vue";
 import Popup from "../popup/Popup.vue";
 import LayoutSetting from "./LayoutSetting.vue";
+import { CARD_SETTING } from "./setting";
 
 const show = ref(false);
 const layoutBtn = ref(null);
@@ -66,10 +67,6 @@ const openPopup = async () => {
   popupY.value = rect.bottom + 8; // 8px gap below button
 
   show.value = true;
-};
-const SIZE = {
-  WIDTH: 998.667,
-  HEIGHT: 591.729,
 };
 
 const props = defineProps({

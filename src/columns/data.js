@@ -1,13 +1,10 @@
+import { CONTENT_STYLE, TITLE_STYLE } from "../text_editor/utils";
+
 function _formatHead(text) {
   return createDoc(text, [
-    { type: "bold" },
     {
       type: "textStyle",
-      attrs: {
-        fontFamily: "Bricolage Grotesque",
-        fontSize: "22.5px",
-        fontWeight: "600",
-      },
+      attrs: TITLE_STYLE,
     },
   ]);
 }
@@ -16,11 +13,7 @@ function _format(text) {
   return createDoc(text, [
     {
       type: "textStyle",
-      attrs: {
-        fontFamily: "Inter",
-        fontSize: "18px",
-        fontWeight: "400",
-      },
+      attrs: CONTENT_STYLE,
     },
   ]);
 }
@@ -69,15 +62,3 @@ export const COLUMNS = [
 ];
 
 export const EMPTY_ROW = { title: _formatHead(""), content: _format("") };
-
-export const TITLE_STYLE = {
-  fontFamily: "Bricolage Grotesque",
-  fontSize: "22.5px",
-  fontWeight: "600",
-};
-
-export const CONTENT_STYLE = {
-  fontFamily: "Inter",
-  fontSize: "18px",
-  fontWeight: "400",
-};

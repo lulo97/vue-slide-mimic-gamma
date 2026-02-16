@@ -1,4 +1,9 @@
 import { ref } from "vue";
+import {
+  CONTENT_STYLE,
+  TITLE_COLUMN_STYLE,
+  TITLE_STYLE,
+} from "../text_editor/utils";
 
 const state = ref([
   {
@@ -18,14 +23,9 @@ const state = ref([
                 {
                   type: "text",
                   marks: [
-                    { type: "bold" },
                     {
                       type: "textStyle",
-                      attrs: {
-                        fontFamily: "Bricolage Grotesque",
-                        fontSize: "45px",
-                        fontWeight: "600",
-                      },
+                      attrs: TITLE_STYLE,
                     },
                   ],
                   text: "Poisonous Plants in Vietnam",
@@ -50,11 +50,7 @@ const state = ref([
                   marks: [
                     {
                       type: "textStyle",
-                      attrs: {
-                        fontFamily: "Inter",
-                        fontSize: "18px",
-                        fontWeight: "400",
-                      },
+                      attrs: CONTENT_STYLE,
                     },
                   ],
                 },
@@ -82,15 +78,8 @@ const state = ref([
                         text: "Where",
                         marks: [
                           {
-                            type: "bold",
-                          },
-                          {
                             type: "textStyle",
-                            attrs: {
-                              fontFamily: "Bricolage Grotesque",
-                              fontSize: "22.5px",
-                              fontWeight: "600",
-                            },
+                            attrs: TITLE_COLUMN_STYLE,
                           },
                         ],
                       },
@@ -110,11 +99,7 @@ const state = ref([
                         marks: [
                           {
                             type: "textStyle",
-                            attrs: {
-                              fontFamily: "Inter",
-                              fontSize: "18px",
-                              fontWeight: "400",
-                            },
+                            attrs: CONTENT_STYLE,
                           },
                         ],
                       },
@@ -136,15 +121,8 @@ const state = ref([
                         text: "Why",
                         marks: [
                           {
-                            type: "bold",
-                          },
-                          {
                             type: "textStyle",
-                            attrs: {
-                              fontFamily: "Bricolage Grotesque",
-                              fontSize: "22.5px",
-                              fontWeight: "600",
-                            },
+                            attrs: TITLE_COLUMN_STYLE,
                           },
                         ],
                       },
@@ -164,11 +142,7 @@ const state = ref([
                         marks: [
                           {
                             type: "textStyle",
-                            attrs: {
-                              fontFamily: "Inter",
-                              fontSize: "18px",
-                              fontWeight: "400",
-                            },
+                            attrs: CONTENT_STYLE,
                           },
                         ],
                       },
@@ -190,15 +164,8 @@ const state = ref([
                         text: "Who' at risk",
                         marks: [
                           {
-                            type: "bold",
-                          },
-                          {
                             type: "textStyle",
-                            attrs: {
-                              fontFamily: "Bricolage Grotesque",
-                              fontSize: "22.5px",
-                              fontWeight: "600",
-                            },
+                            attrs: TITLE_COLUMN_STYLE,
                           },
                         ],
                       },
@@ -218,11 +185,7 @@ const state = ref([
                         marks: [
                           {
                             type: "textStyle",
-                            attrs: {
-                              fontFamily: "Inter",
-                              fontSize: "18px",
-                              fontWeight: "400",
-                            },
+                            attrs: CONTENT_STYLE,
                           },
                         ],
                       },

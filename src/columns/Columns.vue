@@ -1,5 +1,5 @@
 <template>
-  <div class="px-[30px] w-full">
+  <div :class="`${PADDING_X} w-full`">
     <draggable
       v-model="columns"
       item-key="id"
@@ -26,6 +26,7 @@ import { computed } from "vue";
 import draggable from "vuedraggable";
 import ColumnItem from "./ColumnItem.vue";
 import { EMPTY_ROW } from "./data";
+import { PADDING_X } from "../card/setting";
 
 const props = defineProps({
   modelValue: {
