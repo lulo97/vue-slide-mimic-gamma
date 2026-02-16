@@ -34,7 +34,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import { state, updateState } from "../store";
+import { state, updateState } from "../stores/store";
 
 const props = defineProps({
   name: String,

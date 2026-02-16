@@ -3,11 +3,9 @@
     class="relative rounded-md border border-[#DFB679] overflow-hidden"
     :style="`width: ${SIZE.WIDTH}px; height: ${SIZE.HEIGHT}px`"
   >
-  <div
-    class="absolute w-full h-full
-           bg-gradient-to-br from-red-200 via-yellow-200 to-green-200
-           opacity-30 blur-3xl"
-  ></div>
+    <div
+      class="absolute w-full h-full bg-gradient-to-br from-red-200 via-yellow-200 to-green-200 opacity-30 blur-3xl"
+    ></div>
 
     <div
       ref="layoutBtn"
@@ -29,7 +27,7 @@
       <!-- Background mode -->
       <img v-else :class="imageClass" :src="props.image_url" />
 
-      <div v-if="props.layout !== 'background'" class="ml-[24px] flex-1">
+      <div v-if="props.layout !== 'background'" class="ml-[0px] flex-1">
         <slot></slot>
       </div>
 

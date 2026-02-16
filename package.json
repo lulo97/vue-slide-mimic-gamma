@@ -13,12 +13,18 @@
     "@tiptap/core": "^3.19.0",
     "@tiptap/extension-bubble-menu": "^3.19.0",
     "@tiptap/extension-color": "^3.19.0",
+    "@tiptap/extension-font-family": "^3.19.0",
+    "@tiptap/extension-table": "^3.19.0",
+    "@tiptap/extension-table-cell": "^3.19.0",
+    "@tiptap/extension-table-header": "^3.19.0",
+    "@tiptap/extension-table-row": "^3.19.0",
     "@tiptap/extension-text-style": "^3.19.0",
     "@tiptap/starter-kit": "^3.19.0",
     "@tiptap/vue-3": "^3.19.0",
     "@vueuse/core": "^14.2.1",
     "vue": "^3.5.25",
-    "vue-router": "^5.0.2"
+    "vue-router": "^5.0.2",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.2",
