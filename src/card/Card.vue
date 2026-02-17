@@ -33,7 +33,7 @@
       <!-- CONTENT -->
       <div
         v-if="props.layout !== 'background'"
-        class="ml-[0px] pt-[10px] flex-1 h-[60%] box-border"
+        :class="`ml-[0px] pt-[10px] flex-1 ${!['top'].includes(props.layout) ? 'h-full' : 'h-[60%]'} box-border`"
       >
         <slot></slot>
       </div>

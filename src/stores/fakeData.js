@@ -222,7 +222,7 @@ Small differences matter — look for hairs, bright flowers, berries, or resin.
 
 const slide2 = {
   name: "slide2",
-  layout: "top",
+  layout: "none",
   image_url: "",
   contents: [
     {
@@ -271,7 +271,7 @@ const slide2 = {
                       marks: [
                         {
                           type: "textStyle",
-                          attrs: TITLE_COLUMN_STYLE,
+                          attrs: { ...TITLE_COLUMN_STYLE, color: "#FF0000" },
                         },
                       ],
                     },
@@ -314,7 +314,7 @@ const slide2 = {
                       marks: [
                         {
                           type: "textStyle",
-                          attrs: TITLE_COLUMN_STYLE,
+                          attrs: { ...TITLE_COLUMN_STYLE, color: "#FF0000" },
                         },
                       ],
                     },
@@ -331,6 +331,103 @@ const slide2 = {
                     {
                       type: "text",
                       text: "All parts highly toxic → respiratory failure; linked to fatal cases",
+                      marks: [
+                        {
+                          type: "textStyle",
+                          attrs: CONTENT_STYLE,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+
+    {
+      id: 3,
+      level: 3,
+      data: {
+        type: "columns",
+        variant: "none",
+        content: [
+          {
+            id: "0cc4622b-4405-42cb-ae42-81798b25f002",
+            title: {
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [
+                    {
+                      type: "text",
+                      text: "Strychnos nux-vomica — Strychnine Tree",
+                      marks: [
+                        {
+                          type: "textStyle",
+                          attrs: { ...TITLE_COLUMN_STYLE, color: "#FF0000" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            content: {
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [
+                    {
+                      type: "text",
+                      text: "Poisonous seeds (strychnine) → severe convulsions, possible death",
+                      marks: [
+                        {
+                          type: "textStyle",
+                          attrs: CONTENT_STYLE,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+          {
+            id: "84d73c2b-1036-43b5-8dcb-4a6be7b2188f",
+            title: {
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [
+                    {
+                      type: "text",
+                      text: "Wax Tree — Rhus succedanea",
+                      marks: [
+                        {
+                          type: "textStyle",
+                          attrs: { ...TITLE_COLUMN_STYLE, color: "#FF0000" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            content: {
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [
+                    {
+                      type: "text",
+                      text: "Resin causes allergic reactions, skin ulcers; hazardous when inhaled",
                       marks: [
                         {
                           type: "textStyle",

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, nextTick } from "vue";
 import Popover from "../popover/Popover.vue";
+import { state } from "../stores/store";
 
 const emit = defineEmits(["applyColor"]);
 
@@ -45,6 +46,8 @@ function applyColor(color) {
   show.value = false;
 
   emit("applyColor");
+
+  console.log(state);
 }
 </script>
 
@@ -82,8 +85,8 @@ function applyColor(color) {
       <template #content>
         <div class="flex gap-2 p-2" @mousedown.prevent @click.stop>
           <button
-            class="w-5 h-5 rounded-full bg-red-500"
-            @click="applyColor('#ef4444')"
+            class="w-5 h-5 rounded-full bg-[#FF0000]"
+            @click="applyColor('#FF0000')"
           />
           <button
             class="w-5 h-5 rounded-full bg-blue-500"

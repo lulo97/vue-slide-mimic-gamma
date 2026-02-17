@@ -6,7 +6,8 @@ import draggable from "vuedraggable";
 import Columns from "../columns/Columns.vue";
 
 const getJustify = (layout: string) => {
-  if (["background", "none"].includes(layout)) {
+  console.log(layout);
+  if (["background", "none", "left", "right"].includes(layout)) {
     return "justify-center gap-12";
   }
   return "justify-between";
