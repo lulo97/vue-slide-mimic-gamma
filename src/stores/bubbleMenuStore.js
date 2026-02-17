@@ -1,14 +1,14 @@
-import { ref } from "vue"
+// stores/bubbleMenuStore.js
+import { ref } from "vue";
 
-// holds the currently active editor id
-export const activeEditorId = ref(null)
+export const toolMenuId = ref(null);
 
-export function openBubble(id) {
-  activeEditorId.value = id
+export function setActiveToolMenu(id) {
+  toolMenuId.value = id;
 }
 
-export function closeBubble(id) {
-  if (activeEditorId.value === id) {
-    activeEditorId.value = null
+export function clearActiveToolMenu(id) {
+  if (!id || toolMenuId.value === id) {
+    toolMenuId.value = null;
   }
 }

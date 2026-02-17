@@ -1,7 +1,7 @@
 <template>
   <div
     id="columns"
-    :class="`${PADDING_X} w-full relative`"
+    :class="`${PADDING_X} w-full relative  h-fit`"
     @mouseenter="handleColumnsHover('enter')"
     @mouseleave="handleColumnsHover('leave')"
   >
@@ -21,6 +21,7 @@
     >
       <template #item="{ element, index }">
         <ColumnItem
+          :variant="variant"
           :title="element.title"
           :content="element.content"
           @update:title="(val) => updateTitle(index, val)"
@@ -57,6 +58,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  variant: String | undefined,
 });
 
 const emit = defineEmits(["update:modelValue"]);

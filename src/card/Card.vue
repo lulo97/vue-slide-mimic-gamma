@@ -18,23 +18,26 @@
     </div>
 
     <div :class="containerClass" class="w-full h-full relative">
-      <img
-        v-if="props.layout !== 'background'"
-        :class="imageClass"
-        :src="props.image_url"
-      />
+      <!-- IMAGE -->
+      <template v-if="!!props.image_url">
+        <img
+          v-if="props.layout !== 'background'"
+          :class="[imageClass, clipClass]"
+          :src="props.image_url"
+        />
 
-      <!-- Background mode -->
-      <img v-else :class="imageClass" :src="props.image_url" />
+        <!-- Background mode -->
+        <img v-else :class="imageClass" :src="props.image_url" />
+      </template>
 
+      <!-- CONTENT -->
       <div
         v-if="props.layout !== 'background'"
-        class="ml-[0px] mt-[10px] flex-1 h-full"
+        class="ml-[0px] pt-[10px] flex-1 h-[60%] box-border"
       >
         <slot></slot>
       </div>
 
-      <!-- Background content overlay -->
       <div v-else class="ml-[12px] relative z-10 w-full h-full">
         <slot></slot>
       </div>
@@ -109,4 +112,34 @@ const imageClass = computed(() => {
       return "w-full h-full object-contain";
   }
 });
+
+const clipClass = computed(() => {
+  switch (props.layout) {
+    case "top":
+      return "clip-bottom";
+
+    case "left":
+      return "clip-right";
+
+    case "right":
+      return "clip-left";
+
+    default:
+      return "";
+  }
+});
 </script>
+
+<style>
+.clip-bottom {
+  clip-path: ellipse(100% 80% at 50% 20%);
+}
+
+.clip-right {
+  clip-path: ellipse(80% 100% at 20% 50%);
+}
+
+.clip-left {
+  clip-path: ellipse(80% 100% at 80% 50%);
+}
+</style>

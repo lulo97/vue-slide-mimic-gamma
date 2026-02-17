@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative bg-white border border-[#DFB679] p-[18px] rounded-md flex-1 flex flex-col"
+    :class="`relative ${variant == 'none' ? '' : 'bg-white border border-[#DFB679]'} p-[18px] rounded-md flex-1 flex flex-col`"
     @mouseenter="handleColumnHover('enter')"
     @mouseleave="handleColumnHover('leave')"
   >
@@ -87,6 +87,7 @@ const props = defineProps({
   title: Object,
   content: Object,
   index: Number,
+  variant: String | undefined,
 });
 
 const emit = defineEmits([

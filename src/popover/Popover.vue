@@ -1,5 +1,5 @@
 <template>
-  <div class="relative inline-block">
+  <div class="relative inline-block z-[9999]">
     <transition
       enter-active-class="transition ease-out duration-150"
       enter-from-class="opacity-0 translate-y-1"
@@ -10,7 +10,7 @@
     >
       <div
         v-show="show"
-        class="fixed z-50 w-fit rounded-md bg-white shadow-lg ring-1 ring-black/5"
+        class="fixed z-50 w-fit rounded-md bg-white ring-1 ring-black/5"
         :style="{
           top: position.top + 'px',
           left: position.left + 'px',

@@ -119,9 +119,9 @@ function buildDocFromElement(el) {
 
 const output = parseSlidesXML(data_xml);
 
-console.log(output, DATA);
+// console.log(output, DATA);
 
-const state = ref(output);
+const state = ref(DATA);
 
 function updateState(slideName, key, value) {
   const slide = state.value.find((s) => s.name === slideName);

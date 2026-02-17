@@ -1,33 +1,22 @@
 <template>
-  <div class="">
-    <!-- z-index to prevent bubblemenu under another editor -->
-    <BubbleMenu
-      v-if="editor"
-      :editor="editor"
-      class="z-[9999] bg-white border border-gray-200 rounded-lg px-2 py-2 shadow-md flex gap-2"
-    >
-      <button
-        @click="toggleFontWeight"
-        :class="{ active: editor.isActive('textStyle', { fontWeight: '600' }) }"
-      >
-        <img style="width: 17.5px; height: 14px" src="/svg/bold.svg" />
-      </button>
-
-      <button
-        @click="editor.chain().focus().toggleItalic().run()"
-        :class="{ active: editor.isActive('italic') }"
-      >
-        <img style="width: 17.5px; height: 14px" src="/svg/italic.svg" />
-      </button>
-    </BubbleMenu>
-
+  <div ref="editorWrapperRef" class="">
     <!-- w-full not fix bubble menu recaculate position -->
     <div
       :class="`relative ${props.isHideMenu ? '' : PADDING_X} w-full h-fit`"
       @mouseenter="handleEditorHover('enter')"
       @mouseleave="handleEditorHover('leave')"
     >
+      <ToolMenu
+        :editor="editor"
+        :show="showToolMenu"
+        :position="{
+          top: showToolMenuPosition.top,
+          left: showToolMenuPosition.left,
+        }"
+      />
+
       <div
+        ref="showToolButtonRef"
         v-if="showToolButton && !props.isHideMenu"
         :class="`drag-handle absolute top-1/2 -translate-y-1/2 left-[${TEXT_EDITOR_BUBBLE_LEFT}px] bg-white hover:bg-gray-500 px-[3px] h-fit flex justify-center items-center cursor-pointer border-gray-700 border rounded-sm`"
         @click="handleShowToolButtonClick"
@@ -46,20 +35,23 @@
 <script setup>
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
-import { BubbleMenu } from "@tiptap/vue-3/menus";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
-import { ref, onBeforeUnmount, onMounted } from "vue";
+import { ref, onBeforeUnmount, onMounted, computed, nextTick } from "vue";
 import { FontSize } from "@tiptap/extension-text-style/font-size";
 import { FontFamily } from "@tiptap/extension-text-style/font-family";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { TITLE_STYLE, CONTENT_STYLE } from "./utils";
-import {
-  activeEditorId,
-  openBubble,
-  closeBubble,
-} from "../stores/bubbleMenuStore";
 import { PADDING_X, TEXT_EDITOR_BUBBLE_LEFT } from "../card/setting";
+import ToolMenu from "./ToolMenu.vue";
+import {
+  clearActiveToolMenu,
+  setActiveToolMenu,
+  toolMenuId,
+} from "../stores/bubbleMenuStore";
+import { useId } from "vue";
+
+const id = useId();
 
 const CustomTextStyle = TextStyle.extend({
   addAttributes() {
@@ -93,12 +85,6 @@ const CustomTextStyle = TextStyle.extend({
 });
 
 /* ---------------------------
-   Unique ID per instance
----------------------------- */
-
-const editorId = Symbol("editor");
-
-/* ---------------------------
    Props
 ---------------------------- */
 
@@ -123,6 +109,7 @@ const editor = useEditor({
   extensions: [
     StarterKit,
     CustomTextStyle,
+    Color,
     FontSize.configure({
       types: ["textStyle"],
     }),
@@ -156,19 +143,50 @@ const editor = useEditor({
       editor.commands.setMark("textStyle", props.defaultTextStyle);
     }
   },
+  onSelectionUpdate({ editor }) {
+    const { from, to, empty } = editor.state.selection;
+
+    if (empty) {
+      clearActiveToolMenu(id);
+      return;
+    }
+
+    const start = editor.view.coordsAtPos(from);
+    const end = editor.view.coordsAtPos(to);
+
+    showToolMenuPosition.value = {
+      top: start.top - 40,
+      left: (start.left + end.right) / 2,
+    };
+
+    setActiveToolMenu(id);
+  },
 });
 
-function handleShowToolButtonClick() {
+const showToolMenuPosition = ref({
+  top: 0,
+  left: 0,
+});
+const showToolMenu = computed(() => toolMenuId.value === id);
+
+async function handleShowToolButtonClick() {
   if (!editor.value) return;
 
-  openBubble(editorId);
-
   editor.value.chain().focus().selectAll().run();
-}
 
-/* ---------------------------
-   Hover logic
----------------------------- */
+  //showToolMenu.value = true;
+
+  // const { from, to } = editor.value.state.selection;
+  // const start = editor.value.view.coordsAtPos(from);
+  // const end = editor.value.view.coordsAtPos(to);
+
+  // const centerX = (start.left + end.right) / 2;
+
+  // showToolMenuPosition.value = {
+  //   top: start.top - 40,
+  //   left: centerX,
+  // };
+}
 
 const showToolButton = ref(false);
 
@@ -182,24 +200,6 @@ function handleEditorHover(type) {
   }
 }
 
-const toggleFontWeight = () => {
-  const isActive = editor.value.isActive("textStyle", { fontWeight: "600" });
-
-  if (isActive) {
-    editor.value
-      .chain()
-      .focus()
-      .setMark("textStyle", { fontWeight: CONTENT_STYLE.fontWeight })
-      .run();
-  } else {
-    editor.value
-      .chain()
-      .focus()
-      .setMark("textStyle", { fontWeight: TITLE_STYLE.fontWeight })
-      .run();
-  }
-};
-
 onMounted(() => {
   editor.value.chain().focus().setFontFamily(TITLE_STYLE.fontFamily).run();
 });
@@ -208,8 +208,15 @@ onBeforeUnmount(() => {
   if (editor.value) {
     editor.value.destroy();
   }
+});
 
-  // Clean up if this editor was active
-  closeBubble(editorId);
+const editorWrapperRef = ref(null);
+
+import { onClickOutside } from "@vueuse/core";
+
+onClickOutside(editorWrapperRef, () => {
+  if (toolMenuId.value === id) {
+    clearActiveToolMenu(id);
+  }
 });
 </script>
