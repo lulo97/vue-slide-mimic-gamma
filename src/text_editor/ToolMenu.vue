@@ -2,7 +2,7 @@
   <!-- z-index to prevent bubblemenu under another editor -->
   <Popover :show="show" :position="position">
     <template #content>
-      <div class="flex shadow-md">
+      <div class="flex shadow-md px-4 h-[40px]">
         <button
           @click="toggleFontWeight"
           :class="'hover:bg-cyan-200 rounded-md px-2'"

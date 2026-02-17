@@ -215,6 +215,14 @@ const editorWrapperRef = ref(null);
 import { onClickOutside } from "@vueuse/core";
 
 onClickOutside(editorWrapperRef, () => {
+  const target = event.target;
+
+  const isClickColorSelector = target.closest("#colorSelector");
+
+  if (isClickColorSelector) {
+    return;
+  }
+
   if (toolMenuId.value === id) {
     clearActiveToolMenu(id);
   }

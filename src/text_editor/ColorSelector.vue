@@ -40,7 +40,6 @@ function applyColor(color) {
 
   selectedColor.value = color;
 
-  //Uncaught TypeError: props.editor.chain(...).focus(...).setColor is not a function
   props.editor.chain().focus().setColor(color).run();
 
   show.value = false;
@@ -50,13 +49,13 @@ function applyColor(color) {
 </script>
 
 <template>
-  <div class="relative bg-red-200">
+  <div id="colorSelector" class="">
     <!-- Button -->
     <button
       @click="togglePopover"
       ref="buttonRef"
       type="button"
-      class="inline-flex items-center justify-center select-none"
+      class="flex flex-row items-center justify-center select-none h-full gap-2 px-1"
       @mousedown.prevent
     >
       <div class="flex flex-col justify-center items-center gap-[2px]">
@@ -70,7 +69,7 @@ function applyColor(color) {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
-        class="w-2.5 h-2.5 fill-current ml-[2px]"
+        class="w-2.5 h-2.5 fill-current"
       >
         <path
           d="M239 401c9.4 9.4 24.6 9.4 33.9 0L465 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L81 175c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9L239 401z"

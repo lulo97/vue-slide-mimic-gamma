@@ -1,27 +1,28 @@
 <template>
-  <div class="relative inline-block z-[9999]">
-    <transition
-      enter-active-class="transition ease-out duration-150"
-      enter-from-class="opacity-0 translate-y-1"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition ease-in duration-100"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 translate-y-1"
-    >
-      <div
-        v-show="show"
-        class="fixed z-50 w-fit rounded-md bg-white ring-1 ring-black/5"
-        :style="{
-          top: position.top + 'px',
-          left: position.left + 'px',
-          transform: 'translateX(-50%)',
-        }"
-        ref="popover"
+  <teleport to="body">
+    <div class="z-[9999]">
+      <transition
+        enter-active-class="transition ease-out duration-150"
+        enter-from-class="opacity-0 translate-y-1"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition ease-in duration-100"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 translate-y-1"
       >
-        <slot name="content" />
-      </div>
-    </transition>
-  </div>
+        <div
+          v-show="show"
+          class="fixed z-50 w-fit rounded-md bg-white ring-1 ring-black/5"
+          :style="{
+            top: position.top + 'px',
+            left: position.left + 'px',
+            transform: 'translateX(-50%)',
+          }"
+          ref="popover"
+        >
+          <slot name="content" />
+        </div>
+      </transition></div
+  ></teleport>
 </template>
 
 <script setup>
